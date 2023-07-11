@@ -1,0 +1,70 @@
+﻿@using ToDoDragAndDrop.Data
+
+<h3>@this.ListStatus (@this.ToDos.Count())</h3>
+
+<ul class="dropzone @dropClass"
+    ondragover="event.preventDefault();"
+    ondragstart="event.dataTransfer.setData('', event.target.id);"
+    @ondrop="this.HandleDrop"
+    @ondragenter="this.HandleDragEnter"
+    @ondragleave="this.HandleDragLeave">
+
+    @foreach(var toDo in this.ToDos)
+    {
+        <ToDoItem ToDo="toDo" />
+    }
+</ul>
+
+@code {
+    [CascadingParameter]
+    public ToDoContainer Container { get; set; }
+
+    [Parameter]
+    public Status ListStatus { get; set; }
+
+    [Parameter]
+    public List<Status> AllowedStatuses { get; set; } = new List<Status>();
+
+    List<ToDo> ToDos = new List<ToDo>();
+    string dropClass = "";
+
+    protected override void OnParametersSet()
+    {
+        this.ToDos.Clear();
+        this.ToDos.AddRange(this.Container.ToDos.Where(td => td.Status == this.ListStatus));
+    }
+
+    private void HandleDragEnter()
+    {
+        if (this.ListStatus == this.Container.Payload.Status)
+        {
+            return;
+        }
+
+        if (this.AllowedStatuses != null && !this.AllowedStatuses.Contains(this.Container.Payload.Status))
+        {
+            dropClass = "no-drop";
+        }
+        else
+        {
+            dropClass = "can-drop";
+        }
+    }
+
+    private async Task HandleDrop()
+    {
+        dropClass = "";
+
+        if (this.AllowedStatuses != null && !this.AllowedStatuses.Contains(this.Container.Payload.Status))
+        {
+            return;
+        }
+
+        await this.Container.UpdateToDoAsync(ListStatus);
+    }
+
+    private void HandleDragLeave()
+    {
+        dropClass = "";
+    }
+}
