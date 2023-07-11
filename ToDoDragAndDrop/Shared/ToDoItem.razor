@@ -1,0 +1,25 @@
+﻿@using ToDoDragAndDrop.Data
+
+<li class="draggable"
+    draggable="true"
+    title="@this.ToDo.Details"
+    @ondragstart="@(() => HandleDragStart(this.ToDo))">
+    <p class="description">@this.ToDo.Details</p>
+    <p class="last-updated">
+        <small>Updated Time </small>
+        @this.ToDo.UpdatedAt.ToString("HH:mm.ss")
+    </p>
+</li>
+
+@code {
+    [CascadingParameter]
+    public ToDoContainer Container { get; set; }
+
+    [Parameter]
+    public ToDo ToDo { get; set; }
+
+    private void HandleDragStart(ToDo selectedToDo)
+    {
+        this.Container.Payload = selectedToDo;
+    }
+}
