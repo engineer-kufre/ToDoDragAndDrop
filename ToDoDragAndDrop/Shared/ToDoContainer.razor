@@ -1,0 +1,31 @@
+﻿@using ToDoDragAndDrop.Data
+
+<div class="todo-container">
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code {
+    [Parameter]
+    public List<ToDo> ToDos { get; set; } = new List<ToDo>();
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public EventCallback<ToDo> OnStatusUpdated { get; set; }
+
+    public ToDo Payload { get; set; }
+
+    public async Task UpdateToDoAsync(Status newStatus)
+    {
+        var toDo = this.ToDos.SingleOrDefault(td => td.Id == Payload.Id);
+        if (toDo != null)
+        {
+            toDo.Status = newStatus;
+            toDo.UpdatedAt = DateTime.Now;
+            await OnStatusUpdated.InvokeAsync(Payload);
+        }
+    }
+}
