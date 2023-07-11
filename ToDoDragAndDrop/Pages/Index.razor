@@ -1,9 +1,45 @@
 ﻿@page "/"
+@using ToDoDragAndDrop.Data
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
+<ToDoContainer ToDos="this.ToDos" OnStatusUpdated="this.HandleStatusUpdated">
+    <ToDoList ListStatus="Status.Undone" AllowedStatuses="@(new List<Status>{ Status.Undone })" />
+    <ToDoList ListStatus="Status.Started" AllowedStatuses="@(new List<Status>{ Status.Started })" />
+    <ToDoList ListStatus="Status.Completed" AllowedStatuses="@(new List<Status>{ Status.Completed })" />
+</ToDoContainer>
 
-Welcome to your new app.
+<hr />
+<p>Last Updated ToDo: <strong>@lastUpdatedToDo</strong></p>
+<hr />
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@foreach (var toDo in this.ToDos)
+{
+    <p>@toDo.Details - <strong>@toDo.Status</strong></p>
+}
+
+@code{
+    List<ToDo> ToDos = new List<ToDo>();
+
+    string lastUpdatedToDo = "";
+
+    protected override void OnInitialized()
+    {
+        for (int i = 1; i <= 5; i++)
+        {
+            this.ToDos.Add(new ToDo
+                {
+                    Id = i,
+                    Details = "Todo " + i,
+                    Status = Status.Undone,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
+                });
+        }
+    }
+
+    private void HandleStatusUpdated(ToDo updatedToDo)
+    {
+        lastUpdatedToDo = updatedToDo.Details;
+    }
+}
