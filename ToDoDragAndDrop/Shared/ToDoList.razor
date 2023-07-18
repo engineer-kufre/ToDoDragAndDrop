@@ -1,20 +1,22 @@
 ﻿@using ToDoDragAndDrop.Data
 @using Microsoft.JSInterop;
 
-<h3>@this.ListStatus (@this.ToDos.Count())</h3>
+<div class="todo-list">
+    <h3>@this.ListStatus (@this.ToDos.Count())</h3>
 
-<ul class="dropzone @dropClass"
-    ondragover="event.preventDefault();"
-    ondragstart="event.dataTransfer.setData('', event.target.id);"
-    @ondrop="this.HandleDrop"
-    @ondragenter="this.HandleDragEnter"
-    @ondragleave="this.HandleDragLeave">
+    <ul class="dropzone @dropClass"
+        ondragover="event.preventDefault();"
+        ondragstart="event.dataTransfer.setData('', event.target.id);"
+        @ondrop="this.HandleDrop"
+        @ondragenter="this.HandleDragEnter"
+        @ondragleave="this.HandleDragLeave">
 
-    @foreach(var toDo in this.ToDos)
-    {
-        <ToDoItem ToDo="toDo" />
-    }
-</ul>
+        @foreach(var toDo in this.ToDos)
+        {
+            <ToDoItem ToDo="toDo" />
+        }
+    </ul>
+</div>
 
 @code {
     [CascadingParameter]

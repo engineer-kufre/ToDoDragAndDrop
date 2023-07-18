@@ -63,14 +63,17 @@ a, .btn-link {
         content: "An error has occurred."
     }
 
-
-
     .todo-container {
         display: flex;
         justify-content: space-around;
     }
 
-    .job-status ul {
+    .todo-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .todo-list ul {
         flex: 1;
     }
 
