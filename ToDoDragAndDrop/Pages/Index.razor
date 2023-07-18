@@ -4,9 +4,9 @@
 <PageTitle>Index</PageTitle>
 
 <ToDoContainer ToDos="this.ToDos" OnStatusUpdated="this.HandleStatusUpdated">
-    <ToDoList ListStatus="Status.Undone" AllowedStatuses="@(new List<Status>{ Status.Undone })" />
-    <ToDoList ListStatus="Status.Started" AllowedStatuses="@(new List<Status>{ Status.Started })" />
-    <ToDoList ListStatus="Status.Completed" AllowedStatuses="@(new List<Status>{ Status.Completed })" />
+    <ToDoList ListStatus="Status.Undone" AllowedStatuses="@(new List<Status>{ Status.Started, Status.Completed })" />
+    <ToDoList ListStatus="Status.Started" AllowedStatuses="@(new List<Status>{ Status.Undone })" />
+    <ToDoList ListStatus="Status.Completed" AllowedStatuses="@(new List<Status>{ Status.Started })" />
 </ToDoContainer>
 
 <hr />
